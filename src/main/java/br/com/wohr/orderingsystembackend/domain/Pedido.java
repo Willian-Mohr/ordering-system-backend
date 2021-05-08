@@ -2,10 +2,7 @@ package br.com.wohr.orderingsystembackend.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Pedido implements Serializable {
@@ -26,6 +23,8 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "endereco_de_entrega_id")
     private Endereco endereco;
 
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itens = new HashSet<>();
 
     public Pedido() {
     }
@@ -36,6 +35,14 @@ public class Pedido implements Serializable {
         this.cliente = cliente;
         this.endereco = endereco;
     }
+
+//    public List<Produto> getProdutos() {
+//        List<Produto> lista = new ArrayList<>();
+//        for (ItemPedido x : itens) {
+//            lista.add(x.getProduto());
+//        }
+//        return lista;
+//    }
 
     public Integer getId() {
         return id;
@@ -75,6 +82,14 @@ public class Pedido implements Serializable {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
     }
 
     @Override
