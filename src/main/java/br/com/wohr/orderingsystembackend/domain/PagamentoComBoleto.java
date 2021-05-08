@@ -1,6 +1,7 @@
 package br.com.wohr.orderingsystembackend.domain;
 
 import br.com.wohr.orderingsystembackend.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Entity;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Date;
 @Entity
 public class PagamentoComBoleto extends Pagamento {
 
+    @JsonFormat(pattern="dd/MM/yyyy")
     private Date dataVecimento;
     private Date dataPagamento;
 

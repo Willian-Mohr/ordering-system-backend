@@ -1,6 +1,7 @@
 package br.com.wohr.orderingsystembackend.domain;
 
 import br.com.wohr.orderingsystembackend.domain.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -26,17 +27,18 @@ public class Cliente implements Serializable {
     @CollectionTable(name = "TELEFONE")
     private Set<String> telefones = new HashSet<>();
 
+    @JsonBackReference
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
     public Cliente() {
     }
 
-    public Cliente(Integer id, String nome, String email, String cpfouCpnj, TipoCliente tipo) {
+    public Cliente(Integer id, String nome, String email, String cpfOuCpnj, TipoCliente tipo) {
         this.id = id;
         this.nome = nome;
         this.email = email;
-        this.cpfOuCpnj = cpfouCpnj;
+        this.cpfOuCpnj = cpfOuCpnj;
         this.tipo = tipo.getCod();
     }
 
@@ -64,12 +66,12 @@ public class Cliente implements Serializable {
         this.email = email;
     }
 
-    public String getCpfouCpnj() {
+    public String getCpfOuCpnj() {
         return cpfOuCpnj;
     }
 
-    public void setCpfouCpnj(String cpfouCpnj) {
-        this.cpfOuCpnj = cpfouCpnj;
+    public void setCpfOuCpnj(String cpfOuCpnj) {
+        this.cpfOuCpnj = cpfOuCpnj;
     }
 
     public TipoCliente getTipo() {
