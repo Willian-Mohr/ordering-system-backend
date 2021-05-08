@@ -5,9 +5,10 @@ import br.com.wohr.orderingsystembackend.repositories.CateroriaRepository;
 import br.com.wohr.orderingsystembackend.services.exceptions.DataIntegrityException;
 import br.com.wohr.orderingsystembackend.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,5 +39,9 @@ public class CategoriaService {
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não é possível excluir uma categoria que contenha produtos");
         }
+    }
+
+    public List<Categoria> findAll() {
+        return repo.findAll();
     }
 }
