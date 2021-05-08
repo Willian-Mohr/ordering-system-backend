@@ -1,4 +1,7 @@
-package br.com.wohr.orderingsystembackend.domain;
+package br.com.wohr.orderingsystembackend.domain.pk;
+
+import br.com.wohr.orderingsystembackend.domain.Pedido;
+import br.com.wohr.orderingsystembackend.domain.Produto;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;

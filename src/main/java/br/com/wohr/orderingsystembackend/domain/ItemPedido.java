@@ -1,5 +1,6 @@
 package br.com.wohr.orderingsystembackend.domain;
 
+import br.com.wohr.orderingsystembackend.domain.pk.ItemPedidoPK;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.EmbeddedId;
