@@ -1,6 +1,5 @@
 package br.com.wohr.orderingsystembackend.resources;
 
-import br.com.wohr.orderingsystembackend.domain.Categoria;
 import br.com.wohr.orderingsystembackend.domain.Cliente;
 import br.com.wohr.orderingsystembackend.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package br.com.wohr.orderingsystembackend.repositories;
 
-import br.com.wohr.orderingsystembackend.domain.Categoria;
 import br.com.wohr.orderingsystembackend.domain.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

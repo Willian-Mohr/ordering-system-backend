@@ -1,6 +1,7 @@
 package br.com.wohr.orderingsystembackend.services;
 
 import br.com.wohr.orderingsystembackend.domain.Categoria;
+import br.com.wohr.orderingsystembackend.dto.CategoriaDTO;
 import br.com.wohr.orderingsystembackend.repositories.CateroriaRepository;
 import br.com.wohr.orderingsystembackend.services.exceptions.DataIntegrityException;
 import br.com.wohr.orderingsystembackend.services.exceptions.ObjectNotFoundException;
@@ -51,5 +52,9 @@ public class CategoriaService {
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return repo.findAll(pageRequest);
+    }
+
+    public Categoria fromDto(CategoriaDTO objDto) {
+        return new Categoria(objDto.getId(), objDto.getNome());
     }
 }

@@ -1,9 +1,7 @@
 package br.com.wohr.orderingsystembackend.domain;
 
 import br.com.wohr.orderingsystembackend.domain.enums.TipoCliente;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;

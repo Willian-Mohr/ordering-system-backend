@@ -1,6 +1,5 @@
 package br.com.wohr.orderingsystembackend.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

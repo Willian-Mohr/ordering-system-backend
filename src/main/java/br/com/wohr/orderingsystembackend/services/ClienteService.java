@@ -1,6 +1,5 @@
 package br.com.wohr.orderingsystembackend.services;
 
-import br.com.wohr.orderingsystembackend.domain.Categoria;
 import br.com.wohr.orderingsystembackend.domain.Cliente;
 import br.com.wohr.orderingsystembackend.repositories.ClienteRepository;
 import br.com.wohr.orderingsystembackend.services.exceptions.ObjectNotFoundException;
