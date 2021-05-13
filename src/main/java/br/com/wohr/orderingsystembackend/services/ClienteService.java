@@ -1,8 +1,13 @@
 package br.com.wohr.orderingsystembackend.services;
 
+import br.com.wohr.orderingsystembackend.domain.Cidade;
 import br.com.wohr.orderingsystembackend.domain.Cliente;
+import br.com.wohr.orderingsystembackend.domain.Endereco;
+import br.com.wohr.orderingsystembackend.domain.enums.TipoCliente;
 import br.com.wohr.orderingsystembackend.dto.ClienteDTO;
+import br.com.wohr.orderingsystembackend.dto.ClienteNewDTO;
 import br.com.wohr.orderingsystembackend.repositories.ClienteRepository;
+import br.com.wohr.orderingsystembackend.repositories.EnderecoRepository;
 import br.com.wohr.orderingsystembackend.services.exceptions.DataIntegrityException;
 import br.com.wohr.orderingsystembackend.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,9 +28,20 @@ public class ClienteService {
     @Autowired
     private ClienteRepository repo;
 
+    @Autowired
+    EnderecoRepository enderecoRepository;
+
     public Cliente find(Integer id) {
         Optional<Cliente> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+    }
+
+    @Transactional
+    public Cliente insert(Cliente obj) {
+        obj.setId(null);
+        obj = repo.save(obj);
+        enderecoRepository.saveAll(obj.getEnderecos());
+        return obj;
     }
 
     public Cliente update(Cliente obj) {
@@ -57,5 +75,20 @@ public class ClienteService {
 
     public Cliente fromDto(ClienteDTO objDto) {
         return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+    }
+
+    public Cliente fromDto(ClienteNewDTO objDto) {
+        Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
+        Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
+        Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid);
+        cli.getEnderecos().add(end);
+        cli.getTelefones().addAll(Arrays.asList(objDto.getTelefone1(), objDto.getTelefone2(), objDto.getTelefone3()));
+        if (objDto.getTelefone2() != null) {
+            cli.getTelefones().add(objDto.getTelefone2());
+        }
+        if (objDto.getTelefone3() != null) {
+            cli.getTelefones().add(objDto.getTelefone3());
+        }
+        return cli;
     }
 }
