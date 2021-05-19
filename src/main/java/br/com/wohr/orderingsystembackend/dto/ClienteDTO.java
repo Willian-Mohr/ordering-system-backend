@@ -1,12 +1,14 @@
 package br.com.wohr.orderingsystembackend.dto;
 
 import br.com.wohr.orderingsystembackend.domain.Cliente;
+import br.com.wohr.orderingsystembackend.services.validation.ClienteUpdate;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 
     private Integer id;
