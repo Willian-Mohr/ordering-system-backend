@@ -61,7 +61,7 @@ public class CategoriaResource {
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
-    public ResponseEntity<Page<CategoriaDTO>> findAll(
+    public ResponseEntity<Page<CategoriaDTO>> findPage(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "linesPerPage", defaultValue = "24") Integer linesPerPage,
             @RequestParam(name = "orderBy", defaultValue = "nome") String orderBy,
