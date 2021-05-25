@@ -1,10 +1,12 @@
 package br.com.wohr.orderingsystembackend.domain;
 
 import br.com.wohr.orderingsystembackend.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import javax.persistence.Entity;
 
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
 
     private Integer numeroDeParcelas;
