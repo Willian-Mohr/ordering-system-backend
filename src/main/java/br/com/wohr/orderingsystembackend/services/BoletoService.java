@@ -13,6 +13,6 @@ public class BoletoService {
         Calendar cal = Calendar.getInstance();
         cal.setTime(instanteDopedido);
         cal.add(Calendar.WEEK_OF_MONTH, 1);
-        pagto.setDataPagamento(cal.getTime());
+        pagto.setDataVecimento(cal.getTime());
     }
 }
