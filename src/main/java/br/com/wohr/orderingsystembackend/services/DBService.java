@@ -2,6 +2,7 @@ package br.com.wohr.orderingsystembackend.services;
 
 import br.com.wohr.orderingsystembackend.domain.*;
 import br.com.wohr.orderingsystembackend.domain.enums.EstadoPagamento;
+import br.com.wohr.orderingsystembackend.domain.enums.Perfil;
 import br.com.wohr.orderingsystembackend.domain.enums.TipoCliente;
 import br.com.wohr.orderingsystembackend.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,16 +109,21 @@ public class DBService {
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
         Cliente cli1 = new Cliente(null, "Maria Silva", "willianbmohr@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, passwordEncoder.encode("123456"));
+        Cliente cli2 = new Cliente(null, "Willian Mohr", "willianbmohr@hotmail.com", "45390201027", TipoCliente.PESSOAFISICA, passwordEncoder.encode("123456"));
+        cli2.addPerfil(Perfil.ADMIN);
 
         cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+        cli2.getTelefones().addAll(Arrays.asList("27363332", "93838339"));
 
         Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
         Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+        Endereco e3 = new Endereco(null, "Avenida Pedro Taquis", "110", null, "Centro", "38777013", cli2, c2);
 
         cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+        cli2.getEnderecos().addAll(Arrays.asList(e3));
 
-        clienteRepository.saveAll(Arrays.asList(cli1));
-        enderecoRepository.saveAll(Arrays.asList(e1, e2));
+        clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+        enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
