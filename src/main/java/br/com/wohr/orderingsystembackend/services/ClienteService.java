@@ -3,11 +3,14 @@ package br.com.wohr.orderingsystembackend.services;
 import br.com.wohr.orderingsystembackend.domain.Cidade;
 import br.com.wohr.orderingsystembackend.domain.Cliente;
 import br.com.wohr.orderingsystembackend.domain.Endereco;
+import br.com.wohr.orderingsystembackend.domain.enums.Perfil;
 import br.com.wohr.orderingsystembackend.domain.enums.TipoCliente;
 import br.com.wohr.orderingsystembackend.dto.ClienteDTO;
 import br.com.wohr.orderingsystembackend.dto.ClienteNewDTO;
 import br.com.wohr.orderingsystembackend.repositories.ClienteRepository;
 import br.com.wohr.orderingsystembackend.repositories.EnderecoRepository;
+import br.com.wohr.orderingsystembackend.security.UserSpringSecurity;
+import br.com.wohr.orderingsystembackend.services.exceptions.AuthorizationException;
 import br.com.wohr.orderingsystembackend.services.exceptions.DataIntegrityException;
 import br.com.wohr.orderingsystembackend.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,12 @@ public class ClienteService {
     EnderecoRepository enderecoRepository;
 
     public Cliente find(Integer id) {
+
+        UserSpringSecurity user = UserServices.authenticated();
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
         Optional<Cliente> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
     }
@@ -82,7 +91,7 @@ public class ClienteService {
     }
 
     public Cliente fromDto(ClienteNewDTO objDto) {
-        Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()),passwordEncoder.encode(objDto.getSenha()));
+        Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()), passwordEncoder.encode(objDto.getSenha()));
         Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
         Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid);
         cli.getEnderecos().add(end);

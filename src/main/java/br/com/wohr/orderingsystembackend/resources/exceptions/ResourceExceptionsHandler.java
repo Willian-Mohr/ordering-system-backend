@@ -1,5 +1,6 @@
 package br.com.wohr.orderingsystembackend.resources.exceptions;
 
+import br.com.wohr.orderingsystembackend.services.exceptions.AuthorizationException;
 import br.com.wohr.orderingsystembackend.services.exceptions.DataIntegrityException;
 import br.com.wohr.orderingsystembackend.services.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -39,5 +40,12 @@ public class ResourceExceptionsHandler {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
+
+        StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 }
