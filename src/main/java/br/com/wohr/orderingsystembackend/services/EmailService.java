@@ -8,13 +8,16 @@ import javax.mail.internet.MimeMessage;
 
 public interface EmailService {
 
+    void sendOrderConfirmationHtmlEmail(Pedido obj);
+
     void sendOrderConfirmationEmail(Pedido obj);
 
-    void sendMail(SimpleMailMessage msg);
+    void sendPasswordResetEmailHtml(Cliente obj, String newPass);
 
-    void sendOrderConfirmationHtmlEmail(Pedido obj);
+    void sendPasswordResetEmail(Cliente obj, String newPass);
 
     void sendHtmlEmail(MimeMessage msg);
 
-    void sendNewPasswordEmail(Cliente cliente, String newPass);
+    void sendMail(SimpleMailMessage msg);
+
 }

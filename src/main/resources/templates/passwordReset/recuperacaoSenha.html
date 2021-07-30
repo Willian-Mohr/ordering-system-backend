@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Reset password</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div>
+    <h1>
+        Olá <span th:text="${usuario.nome}"> </span>
+    </h1>
+    <p>
+        Vejo que você esqueceu sua senha! Mas fique tranquilo(a), pois geramos uma senha próvisória para você.
+    </p>
+    <p>
+        <span th:text="${usuario.nome}"></span>, sua nova senha é <span th:text="${senha}"></span>
+    </p>
+</div>
+</body>
+</html>
