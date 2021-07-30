@@ -1,6 +1,7 @@
 package br.com.wohr.orderingsystembackend.config;
 
 import br.com.wohr.orderingsystembackend.security.JWTAuthenticationFilter;
+import br.com.wohr.orderingsystembackend.security.JWTAuthorizationFilter;
 import br.com.wohr.orderingsystembackend.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -56,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
 
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
