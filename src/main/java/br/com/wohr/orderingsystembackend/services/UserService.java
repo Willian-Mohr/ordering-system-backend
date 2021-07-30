@@ -3,7 +3,7 @@ package br.com.wohr.orderingsystembackend.services;
 import br.com.wohr.orderingsystembackend.security.UserSpringSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public class UserServices {
+public class UserService {
 
     public static UserSpringSecurity authenticated() {
         try {

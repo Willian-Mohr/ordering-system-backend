@@ -75,7 +75,7 @@ public class PedidoService {
     }
 
     public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-        UserSpringSecurity user = UserServices.authenticated();
+        UserSpringSecurity user = UserService.authenticated();
         if (user == null) {
             throw new AuthorizationException("Acesso negado!");
         }
