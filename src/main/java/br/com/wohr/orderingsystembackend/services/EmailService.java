@@ -12,9 +12,9 @@ public interface EmailService {
 
     void sendOrderConfirmationEmail(Pedido obj);
 
-    void sendPasswordResetEmailHtml(Cliente obj, String newPass);
+    void sendPasswordResetEmailHtml(Cliente obj, String newPass, String url);
 
-    void sendPasswordResetEmail(Cliente obj, String newPass);
+    void sendPasswordResetEmail(Cliente obj, String token, String url);
 
     void sendHtmlEmail(MimeMessage msg);
 

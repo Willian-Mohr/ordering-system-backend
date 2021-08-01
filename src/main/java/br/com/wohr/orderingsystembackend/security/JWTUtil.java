@@ -26,6 +26,16 @@ public class JWTUtil {
                 .compact();
     }
 
+    public String generateToken(String username, Long expirationInMinutes) {
+
+        return Jwts.builder()
+                .setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + (expirationInMinutes * 60000)))
+                .signWith(SignatureAlgorithm.HS512, secret.getBytes())
+                .compact();
+    }
+
+
     public boolean tokenValido(String token) {
 
         Claims claims = getClaims(token);

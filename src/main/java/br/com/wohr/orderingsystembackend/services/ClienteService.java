@@ -7,6 +7,7 @@ import br.com.wohr.orderingsystembackend.domain.enums.Perfil;
 import br.com.wohr.orderingsystembackend.domain.enums.TipoCliente;
 import br.com.wohr.orderingsystembackend.dto.ClienteDTO;
 import br.com.wohr.orderingsystembackend.dto.ClienteNewDTO;
+import br.com.wohr.orderingsystembackend.dto.PasswordResetDTO;
 import br.com.wohr.orderingsystembackend.repositories.ClienteRepository;
 import br.com.wohr.orderingsystembackend.repositories.EnderecoRepository;
 import br.com.wohr.orderingsystembackend.security.UserSpringSecurity;
@@ -47,6 +48,12 @@ public class ClienteService {
 
         Optional<Cliente> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+    }
+
+    public Cliente findByEmail(String email) {
+
+        Optional<Cliente> obj = repo.findByEmail(email);
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Email: " + email + ", Tipo: " + Cliente.class.getName()));
     }
 
     @Transactional
@@ -103,6 +110,15 @@ public class ClienteService {
             cli.getTelefones().add(objDto.getTelefone3());
         }
         return cli;
+    }
+
+    public Cliente updatePassword(Cliente cliente, PasswordResetDTO objDto) {
+
+        if (!objDto.getSenha().equals(objDto.getConfirmaSenha())) {
+            throw new IllegalStateException();
+        }
+        cliente.setSenha(passwordEncoder.encode(objDto.getSenha()));
+        return repo.save(cliente);
     }
 
 }

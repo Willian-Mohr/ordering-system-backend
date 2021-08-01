@@ -3,12 +3,17 @@ package br.com.wohr.orderingsystembackend.resources;
 import br.com.wohr.orderingsystembackend.domain.Cliente;
 import br.com.wohr.orderingsystembackend.dto.ClienteDTO;
 import br.com.wohr.orderingsystembackend.dto.ClienteNewDTO;
+import br.com.wohr.orderingsystembackend.dto.PasswordResetDTO;
+import br.com.wohr.orderingsystembackend.security.JWTUtil;
 import br.com.wohr.orderingsystembackend.services.ClienteService;
+import br.com.wohr.orderingsystembackend.services.exceptions.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -22,6 +27,12 @@ public class ClienteResource {
 
     @Autowired
     private ClienteService service;
+
+    @Autowired
+    private JWTUtil jwtUtil;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Cliente> find(@PathVariable Integer id) {
@@ -77,4 +88,30 @@ public class ClienteResource {
 
         return ResponseEntity.ok().body(listDto);
     }
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
+    public ModelAndView showChangePasswordPage(@RequestParam("Authorization") String token) {
+
+        if (!jwtUtil.tokenValido(token)) {
+            throw new AuthorizationException("Não autorizado");
+        } else {
+            String user = jwtUtil.getUsername(token);
+            Cliente cliente = service.findByEmail(jwtUtil.getUsername(token));
+            return new ModelAndView("passwordReset/updatePassword").addObject("token", token);
+        }
+    }
+
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    public ResponseEntity<Void> updateTeste(@RequestBody PasswordResetDTO objDto, @RequestParam("token") String token) {
+
+        if (!jwtUtil.tokenValido(token)) {
+            throw new AuthorizationException("Não autorizado");
+        } else {
+            String user = jwtUtil.getUsername(token);
+            Cliente cliente = service.findByEmail(jwtUtil.getUsername(token));
+            service.updatePassword(cliente, objDto);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
 }

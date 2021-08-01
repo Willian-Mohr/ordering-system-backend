@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/auth")
@@ -36,7 +38,15 @@ public class AuthResource {
     @RequestMapping(value = "/forgot", method = RequestMethod.POST)
     public ResponseEntity<Void> forgot(@Valid @RequestBody EmailDTO objDto) {
 
-        service.sendNewPassword(objDto.getEmail());
+        String token = jwtUtil.generateToken(objDto.getEmail(), 120L);
+        String url = getAppUrl(ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand().toUri());
+        service.forgotPassword(objDto.getEmail(), token, url);
+
         return ResponseEntity.noContent().build();
     }
+
+    private String getAppUrl(URI uri) {
+        return uri.getScheme() + "://" + uri.getAuthority();
+    }
+
 }
