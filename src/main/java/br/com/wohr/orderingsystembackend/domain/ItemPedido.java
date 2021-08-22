@@ -7,7 +7,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Objects;
 

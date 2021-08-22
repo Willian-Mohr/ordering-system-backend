@@ -1,5 +1,6 @@
 package br.com.wohr.orderingsystembackend.services;
 
+import br.com.wohr.orderingsystembackend.domain.Cliente;
 import br.com.wohr.orderingsystembackend.domain.ItemPedido;
 import br.com.wohr.orderingsystembackend.domain.PagamentoComBoleto;
 import br.com.wohr.orderingsystembackend.domain.Pedido;
@@ -7,8 +8,13 @@ import br.com.wohr.orderingsystembackend.domain.enums.EstadoPagamento;
 import br.com.wohr.orderingsystembackend.repositories.ItemPedidoRepository;
 import br.com.wohr.orderingsystembackend.repositories.PagamentoRepository;
 import br.com.wohr.orderingsystembackend.repositories.PedidoRepository;
+import br.com.wohr.orderingsystembackend.security.UserSpringSecurity;
+import br.com.wohr.orderingsystembackend.services.exceptions.AuthorizationException;
 import br.com.wohr.orderingsystembackend.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,5 +72,15 @@ public class PedidoService {
         itemPedidoRepository.saveAll(obj.getItens());
         emailService.sendOrderConfirmationHtmlEmail(obj);
         return obj;
+    }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSpringSecurity user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado!");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteService.find(user.getId());
+        return repo.findByCliente(cliente, pageRequest);
     }
 }

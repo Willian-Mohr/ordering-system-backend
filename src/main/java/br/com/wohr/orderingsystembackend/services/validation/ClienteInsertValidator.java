@@ -12,6 +12,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
 
@@ -36,7 +37,7 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
             list.add(new FieldMessage("cpfOuCnpj", "CNPJ Inválido"));
         }
 
-        Cliente aux = clienteRepository.findByEmail(objDto.getEmail());
+        Optional<Cliente> aux = clienteRepository.findByEmail(objDto.getEmail());
         if (aux != null) {
             list.add(new FieldMessage("email", "Email já existente!"));
         }
