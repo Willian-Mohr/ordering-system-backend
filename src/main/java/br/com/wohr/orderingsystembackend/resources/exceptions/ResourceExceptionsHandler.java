@@ -1,9 +1,6 @@
 package br.com.wohr.orderingsystembackend.resources.exceptions;
 
-import br.com.wohr.orderingsystembackend.services.exceptions.AuthorizationException;
-import br.com.wohr.orderingsystembackend.services.exceptions.DataIntegrityException;
-import br.com.wohr.orderingsystembackend.services.exceptions.FileException;
-import br.com.wohr.orderingsystembackend.services.exceptions.ObjectNotFoundException;
+import br.com.wohr.orderingsystembackend.services.exceptions.*;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
@@ -80,5 +77,12 @@ public class ResourceExceptionsHandler {
 
         StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Erro Amazon S3", e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(SpringMailException.class)
+    public ResponseEntity<StandardError> springMailException(SpringMailException e, HttpServletRequest request) {
+
+        StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(), "Falha no envio de email", e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 }

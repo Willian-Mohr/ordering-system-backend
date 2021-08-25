@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=prod $JAVA_OPTS -jar target/ordering-system-backend-0.0.1-SNAPSHOT.jar
+web: java -Dserver.port=$PORT -Dspring.profiles.active=prod  -Dspring.mail.password=Wwwmohr945426* -Daws.access_key_id=AKIA3TOSPYE6XFFD2LKX -Daws.secret_access_key=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 $JAVA_OPTS -jar target/ordering-system-backend-0.0.1-SNAPSHOT.jar
