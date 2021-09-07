@@ -4,6 +4,7 @@ import br.com.wohr.orderingsystembackend.domain.Produto;
 import br.com.wohr.orderingsystembackend.dto.ProdutoDTO;
 import br.com.wohr.orderingsystembackend.resources.utils.URL;
 import br.com.wohr.orderingsystembackend.services.ProdutoService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class ProdutoResource {
     @Autowired
     private ProdutoService service;
 
+    @ApiOperation(value="Busca por ID")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Produto> find(@PathVariable Integer id) {
 
@@ -26,6 +28,7 @@ public class ProdutoResource {
         return ResponseEntity.ok().body(obj);
     }
 
+    @ApiOperation(value="Busca todos os produtos com paginação")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Page<ProdutoDTO>> findPage(
             @RequestParam(name = "nome", defaultValue = "") String nome,

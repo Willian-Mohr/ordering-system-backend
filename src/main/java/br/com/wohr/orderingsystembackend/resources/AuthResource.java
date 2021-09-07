@@ -5,6 +5,7 @@ import br.com.wohr.orderingsystembackend.security.JWTUtil;
 import br.com.wohr.orderingsystembackend.security.UserSpringSecurity;
 import br.com.wohr.orderingsystembackend.services.AuthService;
 import br.com.wohr.orderingsystembackend.services.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,7 @@ public class AuthResource {
     @Autowired
     private AuthService service;
 
+    @ApiOperation(value="Recarrega o token atual")
     @RequestMapping(value = "/refresh_token", method = RequestMethod.POST)
     public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
         UserSpringSecurity user = UserService.authenticated();
@@ -36,6 +38,7 @@ public class AuthResource {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value="Recuperação de senha")
     @RequestMapping(value = "/forgot", method = RequestMethod.POST)
     public ResponseEntity<Void> forgot(@Valid @RequestBody EmailDTO objDto) {
 
