@@ -7,6 +7,7 @@ import br.com.wohr.orderingsystembackend.dto.PasswordResetDTO;
 import br.com.wohr.orderingsystembackend.security.JWTUtil;
 import br.com.wohr.orderingsystembackend.services.ClienteService;
 import br.com.wohr.orderingsystembackend.services.exceptions.AuthorizationException;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,7 @@ public class ClienteResource {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @ApiOperation(value="Busca por ID")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Cliente> find(@PathVariable Integer id) {
 
@@ -43,6 +45,7 @@ public class ClienteResource {
         return ResponseEntity.ok().body(obj);
     }
 
+    @ApiOperation(value="Busca por email")
     @RequestMapping(value = "/email", method = RequestMethod.GET)
     public ResponseEntity<Cliente> find(@RequestParam(value = "value") String email) {
 
@@ -51,6 +54,7 @@ public class ClienteResource {
         return ResponseEntity.ok().body(obj);
     }
 
+    @ApiOperation(value="Insere um novo cliente")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
         Cliente obj = service.fromDto(objDto);
@@ -59,6 +63,7 @@ public class ClienteResource {
         return ResponseEntity.created(uri).build();
     }
 
+    @ApiOperation(value="Edita o cliente informado")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
         Cliente obj = service.fromDto(objDto);
@@ -67,6 +72,7 @@ public class ClienteResource {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value="Deleta o cliente informado")
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
@@ -74,6 +80,7 @@ public class ClienteResource {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value="Busca todos os clientes")
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ClienteDTO>> findAll() {
@@ -84,6 +91,7 @@ public class ClienteResource {
         return ResponseEntity.ok().body(listDto);
     }
 
+    @ApiOperation(value="Busca todos os clientes com paginação")
     @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public ResponseEntity<Page<ClienteDTO>> findAll(
@@ -97,6 +105,7 @@ public class ClienteResource {
 
         return ResponseEntity.ok().body(listDto);
     }
+
 
     @RequestMapping(value = "/changePassword", method = RequestMethod.GET)
     public ModelAndView showChangePasswordPage(@RequestParam("Authorization") String token) {
@@ -123,6 +132,7 @@ public class ClienteResource {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value="Realiza a troca de perfil do cliente")
     @RequestMapping(value = "/picture", method = RequestMethod.POST)
     public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = "file") MultipartFile file) {
 
